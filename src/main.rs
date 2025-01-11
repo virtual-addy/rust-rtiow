@@ -1,14 +1,10 @@
 use std::io::stdout;
 use std::sync::Arc;
 use crate::camera::Camera;
-use crate::color::{write_color, Color};
-use crate::hittable::{HitRecord, Hittable};
+use crate::hittable::{ Hittable};
 use crate::hittable_list::HittableList;
-use crate::interval::Interval;
-use crate::ray::Ray;
-use crate::rt_weekend::INFINITY;
 use crate::sphere::Sphere;
-use crate::vec3::{dot, unit_vector, Point3, Vec3};
+use crate::vec3::{Point3};
 
 mod rt_weekend;
 mod vec3;
@@ -29,6 +25,7 @@ fn main() {
     let mut camera = Camera::default();
     camera.aspect_ratio  = 16.0 / 9.0;
     camera.image_width = 400;
+    camera.samples_per_pixel = 100;
 
     camera.render(&world);
 }
