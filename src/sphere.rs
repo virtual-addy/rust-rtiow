@@ -1,4 +1,3 @@
-use std::cmp::max;
 use crate::hittable::{HitRecord, Hittable};
 use crate::ray::Ray;
 use crate::vec3::{dot, Point3};
