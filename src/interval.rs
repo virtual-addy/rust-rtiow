@@ -1,6 +1,6 @@
 pub struct Interval {
-    min: f64,
-    max: f64,
+    pub min: f64,
+    pub max: f64,
 }
 
 impl Interval {
@@ -23,15 +23,15 @@ impl Interval {
         self.min < x && x < self.max
     }
 
-    pub const EMPTY: Interval = Interval::new(
-        f64::INFINITY,
-        f64::NEG_INFINITY,
-    );
+    pub const EMPTY: Interval = Interval {
+        min: f64::INFINITY,
+        max: f64::NEG_INFINITY,
+    };
 
-    pub const UNIVERSE: Interval = Interval::new(
-        f64::NEG_INFINITY,
-        f64::INFINITY,
-    );
+    pub const UNIVERSE: Interval = Interval {
+        min: f64::NEG_INFINITY,
+        max: f64::INFINITY,
+    };
 
 }
 
