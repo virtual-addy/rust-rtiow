@@ -1,5 +1,6 @@
 use std::fmt::{Display, Formatter};
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, Sub};
+use crate::rt_weekend::{random_f64, random_f64_within};
 
 #[derive(Debug, Copy, Clone)]
 pub struct Vec3 {
@@ -28,6 +29,18 @@ impl Vec3 {
     }
 
     pub fn length(&self) -> f64 { self.length_squared().sqrt() }
+
+    pub fn random() -> Self {
+        Self::new(random_f64(), random_f64(), random_f64())
+    }
+
+    pub fn random_within(min: f64, max: f64) -> Self {
+        Self::new(
+            random_f64_within(min, max),
+            random_f64_within(min, max),
+            random_f64_within(min, max),
+        )
+    }
 }
 
 impl Display for Vec3 {
@@ -35,6 +48,7 @@ impl Display for Vec3 {
         write!(f, "{} {} {}", self.e[0], self.e[1], self.e[2])
     }
 }
+
 impl Neg for Vec3 {
     type Output = Self;
 
@@ -165,6 +179,27 @@ pub fn cross(u: &Vec3, v: &Vec3) -> Vec3 {
 
 pub fn unit_vector(v: &Vec3) -> Vec3 {
     *v / v.length()
+}
+
+pub fn random_unit_vector() -> Vec3 {
+    loop {
+        let p = Vec3::random_within(-1.0, 1.0);
+        let len_sq = p.length_squared();
+
+        if 1e-160 < len_sq && len_sq <= 1.0 {
+            return p / len_sq.sqrt();
+        }
+    }
+}
+
+pub fn random_on_hemisphere(normal: &Vec3) -> Vec3 {
+    let on_unit_hemisphere = random_unit_vector();
+
+    if dot(&on_unit_hemisphere, normal) > 0.0 {
+        on_unit_hemisphere
+    } else {
+        -on_unit_hemisphere
+    }
 }
 
 pub type Point3 = Vec3;
