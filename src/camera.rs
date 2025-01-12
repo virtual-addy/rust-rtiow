@@ -4,7 +4,7 @@ use crate::hittable::{HitRecord, Hittable};
 use crate::interval::Interval;
 use crate::ray::Ray;
 use crate::rt_weekend::random_f64;
-use crate::vec3::{random_on_hemisphere, unit_vector, Point3, Vec3};
+use crate::vec3::{random_on_hemisphere, random_unit_vector, unit_vector, Point3, Vec3};
 
 pub struct Camera {
     pub aspect_ratio: f64, // ratio of image width / height
@@ -105,7 +105,7 @@ impl Camera {
 
         // recursive case
         if world.hit(r, Interval::new(0.001, f64::INFINITY), &mut rec) {
-            let direction = random_on_hemisphere(&rec.normal);
+            let direction = rec.normal + random_unit_vector();
             return 0.5 * self.ray_color(&Ray::new(rec.p, direction), depth - 1, world);
         }
 
