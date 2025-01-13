@@ -13,12 +13,8 @@ pub struct Sphere {
 }
 
 impl Sphere {
-    pub fn new(center: Point3, radius: f64) -> Self {
-        Self {
-            center,
-            radius: radius.max(0.0),
-            mat: Arc::new(Lambertian::new(Color::BLACK))
-        }
+    pub fn new(center: Point3, radius: f64, mat: Arc<dyn Material>) -> Self {
+        Self { center, radius: radius.max(0.0), mat }
     }
 }
 

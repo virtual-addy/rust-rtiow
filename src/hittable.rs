@@ -23,7 +23,7 @@ impl HitRecord {
             normal: Vec3::default(),
             t: 0.0,
             front_face: false,
-            mat: Arc::new(Lambertian::new(Color::BLACK))
+            mat: Arc::new(Lambertian::new(Color::new(0.0, 0.0, 0.0)))
         }
     }
 

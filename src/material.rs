@@ -1,10 +1,10 @@
 use crate::color::Color;
 use crate::hittable::HitRecord;
 use crate::ray::Ray;
-use crate::vec3::random_unit_vector;
+use crate::vec3::{random_unit_vector, reflect};
 
 pub trait Material {
-    fn scatter(&self, ray_in: &Ray, rec: &HitRecord, attenuation: &mut Color, scattered: &mut Ray) -> bool;
+    fn scatter(&self, r_in: &Ray, rec: &HitRecord, attenuation: &mut Color, scattered: &mut Ray) -> bool;
 }
 
 pub struct Lambertian {
@@ -18,7 +18,7 @@ impl Lambertian {
 }
 
 impl Material for Lambertian {
-    fn scatter(&self, ray_in: &Ray, rec: &HitRecord, attenuation: &mut Color, scattered: &mut Ray) -> bool {
+    fn scatter(&self, _: &Ray, rec: &HitRecord, attenuation: &mut Color, scattered: &mut Ray) -> bool {
         let mut scatter_direction = rec.normal + random_unit_vector();
 
         // catch degenerate scatter direction
@@ -32,5 +32,22 @@ impl Material for Lambertian {
     }
 }
 
+pub struct Metal {
+    albedo: Color,
+}
 
+impl Metal {
+    pub fn new(albedo: Color) -> Self {
+        Self { albedo }
+    }
+}
 
+impl Material for Metal {
+    fn scatter(&self, r_in: &Ray, rec: &HitRecord, attenuation: &mut Color, scattered: &mut Ray) -> bool {
+        let reflected = reflect(r_in.direction(), &rec.normal);
+        *scattered = Ray::new(rec.p, reflected);
+        *attenuation = self.albedo;
+
+        true
+    }
+}

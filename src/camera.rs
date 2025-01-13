@@ -105,8 +105,14 @@ impl Camera {
 
         // recursive case
         if world.hit(r, Interval::new(0.001, f64::INFINITY), &mut rec) {
-            let direction = rec.normal + random_unit_vector();
-            return 0.5 * self.ray_color(&Ray::new(rec.p, direction), depth - 1, world);
+            let mut scattered = Ray::default();
+            let mut attenuation = Color::default();
+
+            if rec.mat.scatter(r, &rec, &mut attenuation, &mut scattered) {
+                return attenuation * self.ray_color(&scattered, depth- 1, world);
+            }
+
+            return Color::new(0.0, 0.0, 0.0);
         }
 
         // no hits

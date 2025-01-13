@@ -5,7 +5,9 @@ use crate::vec3::Vec3;
 pub type Color = Vec3;
 
 impl Color {
-    pub const BLACK: Color = Color::new(0.0, 0.0, 0.0);
+    // pub const BLACK: Color = Color {
+    //     e: [0.0, 0.0, 0.0]
+    // };
 }
 
 
