@@ -41,6 +41,11 @@ impl Vec3 {
             random_f64_within(min, max),
         )
     }
+
+    pub fn near_zero(&self) -> bool {
+        let s = 1e-8;
+        self.e[0].abs() < s && self.e[1].abs() < s && self.e[3].abs() < s
+    }
 }
 
 impl Display for Vec3 {

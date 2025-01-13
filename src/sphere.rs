@@ -1,16 +1,24 @@
+use std::sync::Arc;
+use crate::color::Color;
 use crate::hittable::{HitRecord, Hittable};
 use crate::interval::Interval;
+use crate::material::{Lambertian, Material};
 use crate::ray::Ray;
 use crate::vec3::{dot, Point3};
 
 pub struct Sphere {
     center: Point3,
     radius: f64,
+    mat: Arc<dyn Material>,
 }
 
 impl Sphere {
     pub fn new(center: Point3, radius: f64) -> Self {
-        Self{ center, radius: radius.max(0.0) }
+        Self {
+            center,
+            radius: radius.max(0.0),
+            mat: Arc::new(Lambertian::new(Color::BLACK))
+        }
     }
 }
 
@@ -42,6 +50,8 @@ impl Hittable for Sphere {
 
         let outward_normal = (rec.p - self.center) / self.radius;
         rec.set_face_normal(r, &outward_normal);
+
+        rec.mat = self.mat.clone();
 
         true
     }

@@ -1,5 +1,8 @@
 use std::ops::Neg;
+use std::sync::Arc;
+use crate::color::Color;
 use crate::interval::Interval;
+use crate::material::{Lambertian, Material};
 use crate::ray::Ray;
 use crate::vec3::{dot, Point3, Vec3};
 
@@ -9,6 +12,7 @@ pub struct HitRecord {
     pub normal: Vec3,
     pub t: f64,
     pub front_face: bool,
+    pub mat: Arc<dyn Material>
 }
 
 impl HitRecord {
@@ -19,6 +23,7 @@ impl HitRecord {
             normal: Vec3::default(),
             t: 0.0,
             front_face: false,
+            mat: Arc::new(Lambertian::new(Color::BLACK))
         }
     }
 
