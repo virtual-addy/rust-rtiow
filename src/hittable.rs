@@ -2,7 +2,8 @@ use std::ops::Neg;
 use std::sync::Arc;
 use crate::color::Color;
 use crate::interval::Interval;
-use crate::material::{Lambertian, Material};
+use crate::material::Lambertian;
+use crate::material::Material;
 use crate::ray::Ray;
 use crate::vec3::{dot, Point3, Vec3};
 
