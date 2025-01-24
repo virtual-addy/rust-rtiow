@@ -3,14 +3,17 @@ use crate::color::{write_color, Color};
 use crate::hittable::{HitRecord, Hittable};
 use crate::interval::Interval;
 use crate::ray::Ray;
-use crate::rt_weekend::random_f64;
+use crate::rt_weekend::{degrees_to_radians, random_f64};
 use crate::vec3::{random_on_hemisphere, random_unit_vector, unit_vector, Point3, Vec3};
 
 pub struct Camera {
+    // public
     pub aspect_ratio: f64, // ratio of image width / height
-    pub image_width: i32, // rendered image width in pixel count
-    pub samples_per_pixel: i32, // count of random samples for each pixel
+    pub image_width: i32, /// rendered image width in pixel count
+    pub samples_per_pixel: i32, /// count of random samples for each pixel
     pub max_depth: i32,
+    pub vfov: i32, // vertical view angle (field of view) in degrees
+
     // private
     image_height: i32, // rendered image height
     center: Point3, // camera center
@@ -27,6 +30,7 @@ impl Camera {
             image_width: 100,
             samples_per_pixel: 10,
             max_depth: 10,
+            vfov: 90,
             // private
             image_height: 0,
             center: Point3::default(),
@@ -77,7 +81,9 @@ impl Camera {
 
         // viewport dimensions
         let focal_length = 1.0;
-        let viewport_height = 2.0;
+        let theta = degrees_to_radians(self.vfov as f64);
+        let h = (theta / 2.0).tan();
+        let viewport_height = 2.0 * h * focal_length;
         let viewport_width = viewport_height * ((self.image_width as f64) / (self.image_height as f64));
 
         // vector across horizontal and vertical viewport edges

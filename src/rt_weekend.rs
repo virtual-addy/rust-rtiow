@@ -1,4 +1,4 @@
-use rand::{random, Rng};
+use rand::Rng;
 
 const PI: f64 = 3.1415926535897932385_f64;
 
