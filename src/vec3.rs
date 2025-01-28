@@ -164,7 +164,7 @@ impl MulAssign<f64> for Vec3 {
 
 impl DivAssign<f64> for Vec3 {
     fn div_assign(&mut self, rhs: f64) {
-        *self *= (1.0 / rhs);
+        *self *= 1.0 / rhs;
     }
 }
 
@@ -204,6 +204,20 @@ pub fn random_on_hemisphere(normal: &Vec3) -> Vec3 {
         on_unit_hemisphere
     } else {
         -on_unit_hemisphere
+    }
+}
+
+pub fn random_in_unit_disk() -> Vec3 {
+    loop {
+        let p = Vec3::new(
+            random_f64_within(-1.0, 1.0),
+            random_f64_within(-1.0, 1.0),
+            0.0
+        );
+
+        if p.length_squared() < 1.0 {
+            break p;
+        }
     }
 }
 
