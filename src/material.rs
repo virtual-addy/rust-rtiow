@@ -55,12 +55,12 @@ impl Metal {
 
 impl Material for Metal {
     fn scatter(&self, r_in: &Ray, rec: &HitRecord, attenuation: &mut Color, scattered: &mut Ray) -> bool {
-        let mut reflected = reflect(r_in.direction(), &rec.normal);
-        reflected = unit_vector(&reflected) + (self.fuzz * random_unit_vector());
+        let mut reflected = reflect(*r_in.direction(), rec.normal);
+        reflected = unit_vector(reflected) + (self.fuzz * random_unit_vector());
         *scattered = Ray::new(rec.p, reflected);
         *attenuation = self.albedo;
 
-        dot(&scattered.direction(), &rec.normal) > 0.0
+        dot(*scattered.direction(), rec.normal) > 0.0
     }
 }
 
@@ -92,17 +92,17 @@ impl Material for Dielectric {
             (1.0 / self.refraction_index)
         } else { self.refraction_index };
 
-        let unit_direction = unit_vector(r_in.direction());
-        let cos_theta = dot(&(-unit_direction), &rec.normal).min(1.0);
+        let unit_direction = unit_vector(*r_in.direction());
+        let cos_theta = dot(-unit_direction, rec.normal).min(1.0);
         let sin_theta = (1.0 - cos_theta * cos_theta).sqrt();
 
         let cannot_refract = ri * sin_theta > 1.0;
         let mut direction = Vec3::default();
 
         if cannot_refract || Dielectric::reflectance(cos_theta, ri) > random_f64() {
-            direction = reflect(&unit_direction, &rec.normal);
+            direction = reflect(unit_direction, rec.normal);
         } else {
-            direction = refract(&unit_direction, &rec.normal, ri);
+            direction = refract(unit_direction, rec.normal, ri);
         }
 
         *scattered = Ray::new(rec.p, direction);
