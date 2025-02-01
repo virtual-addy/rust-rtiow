@@ -1,6 +1,6 @@
-# Ray Tracing In One Weekend (Rust Impl)
+# Ray Tracing In One Weekend (Rust Implementation)
 
-This is an implementation of the Ray Tracing In One Weekend using Rust.
+This is an implementation of the [Ray Tracing In One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html) book using Rust.
 
 There exists only one branch but with multiple commits for keypoint in building the codebase.
 To execute and see the output, a convenient `.sh` script has been added to generate a `.ppm` image file output for each execution.
