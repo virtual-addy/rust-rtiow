@@ -55,16 +55,16 @@ impl Camera {
             focus_dist: 10.0,
             //
             image_height: 0,
-            center: Point3::default(),
-            pixel00_loc: Point3::default(),
-            pixel_delta_u: Vec3::default(),
-            pixel_delta_v: Vec3::default(),
+            center: Point3::zero(),
+            pixel00_loc: Point3::zero(),
+            pixel_delta_u: Vec3::zero(),
+            pixel_delta_v: Vec3::zero(),
             pixel_samples_scale: 1.0,
-            u: Vec3::default(),
-            v: Vec3::default(),
-            w: Vec3::default(),
-            defocus_disk_u: Vec3::default(),
-            defocus_disk_v: Vec3::default(),
+            u: Vec3::zero(),
+            v: Vec3::zero(),
+            w: Vec3::zero(),
+            defocus_disk_u: Vec3::zero(),
+            defocus_disk_v: Vec3::zero(),
         }
     }
 
@@ -148,7 +148,7 @@ impl Camera {
         // recursive case
         if world.hit(r, Interval::new(0.001, f64::INFINITY), &mut rec) {
             let mut scattered = Ray::default();
-            let mut attenuation = Color::default();
+            let mut attenuation = Color::zero();
 
             if rec.mat.scatter(r, &rec, &mut attenuation, &mut scattered) {
                 return attenuation * self.ray_color(&scattered, depth - 1, world);
@@ -176,8 +176,9 @@ impl Camera {
             self.center
         } else { self.defocus_disk_sample() };
         let ray_direction = pixel_sample - ray_origin;
+        let ray_time = random_f64();
 
-        Ray::new(ray_origin, ray_direction)
+        Ray::timed(ray_origin, ray_direction, ray_time)
     }
 
     fn defocus_disk_sample(&self) -> Point3 {
