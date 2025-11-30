@@ -20,8 +20,8 @@ impl HitRecord {
 
     pub fn default() -> Self {
         Self {
-            p: Point3::default(),
-            normal: Vec3::default(),
+            p: Point3::zero(),
+            normal: Vec3::zero(),
             t: 0.0,
             front_face: false,
             mat: Arc::new(Lambertian::new(Color::new(0.0, 0.0, 0.0)))

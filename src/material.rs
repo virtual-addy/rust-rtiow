@@ -20,7 +20,7 @@ impl Lambertian {
 }
 
 impl Material for Lambertian {
-    fn scatter(&self, _: &Ray, rec: &HitRecord, attenuation: &mut Color, scattered: &mut Ray) -> bool {
+    fn scatter(&self, r_in: &Ray, rec: &HitRecord, attenuation: &mut Color, scattered: &mut Ray) -> bool {
         let mut scatter_direction = rec.normal + random_unit_vector();
 
         // catch degenerate scatter direction
@@ -28,7 +28,7 @@ impl Material for Lambertian {
             scatter_direction = rec.normal;
         }
 
-        *scattered = Ray::new(rec.p, scatter_direction);
+        *scattered = Ray::timed(rec.p, scatter_direction, r_in.time());
         *attenuation = self.albedo;
         true
     }
@@ -97,7 +97,7 @@ impl Material for Dielectric {
         let sin_theta = (1.0 - cos_theta * cos_theta).sqrt();
 
         let cannot_refract = ri * sin_theta > 1.0;
-        let mut direction = Vec3::default();
+        let direction: Vec3;
 
         if cannot_refract || Dielectric::reflectance(cos_theta, ri) > random_f64() {
             direction = reflect(unit_direction, rec.normal);
@@ -105,7 +105,7 @@ impl Material for Dielectric {
             direction = refract(unit_direction, rec.normal, ri);
         }
 
-        *scattered = Ray::new(rec.p, direction);
+        *scattered = Ray::timed(rec.p, direction, r_in.time());
         true
     }
 }

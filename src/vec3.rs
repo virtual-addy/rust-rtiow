@@ -8,7 +8,7 @@ pub struct Vec3 {
 }
 
 impl Vec3 {
-    pub fn default() -> Self {
+    pub fn zero() -> Self {
         Self { e: [0.0, 0.0, 0.0] }
     }
 
