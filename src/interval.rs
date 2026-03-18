@@ -5,7 +5,7 @@ pub struct Interval {
 
 impl Interval {
     /// Default interval is empty
-    pub fn default() -> Self {
+    pub fn empty() -> Self {
         Self { min: f64::INFINITY, max: -f64::INFINITY }
     }
 
@@ -27,6 +27,11 @@ impl Interval {
         if x < self.min { return self.min; }
         if x > self.max { return self.max; }
         x
+    }
+
+    pub fn expand(&self, delta: f64) -> Self {
+        let padding = delta / 2.0;
+        Self::new(self.min - padding, self.max + padding)
     }
 
     pub const EMPTY: Interval = Interval {

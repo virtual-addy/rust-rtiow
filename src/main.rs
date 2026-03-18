@@ -21,6 +21,7 @@ mod hittable_list;
 mod interval;
 mod camera;
 mod material;
+mod aabb;
 
 fn main() {
     //world
